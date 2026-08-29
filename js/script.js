@@ -1,4 +1,4 @@
-fetch("http://localhost:5000/api/products")
+fetch('products.json')
 .then(response => response.json())
 .then(products => {
     const grid=document.getElementById("productGrid");
@@ -33,13 +33,8 @@ function addToCart(productId){
         return;
     }
 
-    fetch("http://localhost:5000/api/cart/add",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({productId:productId})
-    })
-    .then(response=>response.json())
-    .then(data=>{
-        alert(data.message);
-    });
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(productId);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Product added to cart successfully!");
 }

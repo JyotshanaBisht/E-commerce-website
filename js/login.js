@@ -7,7 +7,6 @@ function login(){
         return;
     }
 
-    // Admin ke liye direct login
     if(email === "admin@myshop.com" && password === "admin123"){
         localStorage.setItem("loggedIn", "yes");
         localStorage.setItem("userEmail", email);

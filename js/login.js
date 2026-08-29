@@ -1,41 +1,51 @@
 function login(){
-    const email=document.getElementById("email").value;
-    const password=document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    fetch("http://localhost:5000/api/login",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({email:email, password:password})
-    })
-    .then(response=>response.json())
-    .then(data=>{
-        document.getElementById("loginMessage").innerHTML=data.message;
+    if(!email || !password){
+        document.getElementById("loginMessage").innerHTML = "Please fill all fields!";
+        return;
+    }
 
-        if(data.message==="Login Successful!"){
-            localStorage.setItem("loggedIn","yes");
-            localStorage.setItem("userEmail",email);
-            localStorage.setItem("username",data.username);
+    // Admin ke liye direct login
+    if(email === "admin@myshop.com" && password === "admin123"){
+        localStorage.setItem("loggedIn", "yes");
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("username", "Admin");
+        window.location.href = "index.html";
+        return;
+    }
 
-            const pendingProduct=localStorage.getItem("pendingProduct");
+    // LocalStorage se registered users ki list nikalein
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // Check karein ki user match ho raha hai ya nahi
+    const validUser = users.find(u => u.email === email && u.password === password);
 
-            if(pendingProduct){
-                fetch("http://localhost:5000/api/cart/add",{
-                    method:"POST",
-                    headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify({productId:Number(pendingProduct)})
-                })
-                .then(response=>response.json())
-                .then(()=>{
-                    localStorage.removeItem("pendingProduct");
-                    window.location.href="index.html";
-                });
-            }
-            else{
-                window.location.href="index.html";
-            }
+    if(validUser){
+        document.getElementById("loginMessage").innerHTML = "Login Successful!";
+        localStorage.setItem("loggedIn", "yes");
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("username", validUser.username);
+
+        const pendingProduct = localStorage.getItem("pendingProduct");
+
+        if(pendingProduct){
+            // GitHub Pages ke liye cart mein item localStorage mein add karenge
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push(Number(pendingProduct));
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+            localStorage.removeItem("pendingProduct");
+            window.location.href = "index.html";
         }
-    })
-    .catch(error=>{
-        console.log("Error:",error);
-    });
+        else{
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 500);
+        }
+    }
+    else {
+        document.getElementById("loginMessage").innerHTML = "Invalid email or password!";
+    }
 }

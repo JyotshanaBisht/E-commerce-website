@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="navbar"></div>
+    <h1>My Cart</h1>
+    <div id="cartItems">
+        <p>Loading...</p>
+    </div>
+    <h2 id="cartTotal"></h2>
+
+    <div id="checkoutForm">
+        <h3>Checkout</h3>
+        <input type="text" id="address" placeholder="Enter your address">
+        <button onclick="placeOrder()">Place Order</button>
+    </div>
+    <p id="orderMessage"></p>
+
+    <p><a href="index.html">←Back to Products</a></p>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

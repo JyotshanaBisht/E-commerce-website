@@ -16,10 +16,7 @@ function login(){
         return;
     }
 
-    // LocalStorage se registered users ki list nikalein
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    
-    // Check karein ki user match ho raha hai ya nahi
     const validUser = users.find(u => u.email === email && u.password === password);
 
     if(validUser){
@@ -31,7 +28,6 @@ function login(){
         const pendingProduct = localStorage.getItem("pendingProduct");
 
         if(pendingProduct){
-            // GitHub Pages ke liye cart mein item localStorage mein add karenge
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             cart.push(Number(pendingProduct));
             localStorage.setItem("cart", JSON.stringify(cart));

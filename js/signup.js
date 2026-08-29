@@ -9,7 +9,7 @@ function signup(){
     }
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
-
+    
     const existingUser = users.find(u => u.email === email);
     if (existingUser) {
         document.getElementById("signupMessage").innerHTML = "Email already registered! Please login.";
@@ -20,7 +20,7 @@ function signup(){
     localStorage.setItem("users", JSON.stringify(users));
 
     document.getElementById("signupMessage").innerHTML = "Signup successful! Redirecting to login...";
-
+    
     setTimeout(() => {
         window.location.href = "login.html";
     }, 1000);
